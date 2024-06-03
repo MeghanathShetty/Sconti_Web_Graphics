@@ -13,7 +13,7 @@ function Environment1Sapling({count = 9 }) {
   const [score, setScore] = useState(-1);
 
   function handleScore(val) {
-    setScore(val)
+    setScore(val);
   }
 
   let grass = [];
@@ -48,6 +48,7 @@ function Environment1Sapling({count = 9 }) {
         <input type='number' onKeyDown={(e) => {
           if (e.key === 'Enter') {
             handleScore(e.target.value);
+            e.target.value = '';
           }
         }} />
     <Canvas>

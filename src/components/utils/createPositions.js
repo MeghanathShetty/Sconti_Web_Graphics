@@ -1,6 +1,7 @@
 
-export const createPositions=(boundary = 4.8, count = 3) =>{
-    let positions = [];
+export const createPositions=(boundary = 4.8, count = 3, positions = [], sapling = false) =>{
+
+    // let positions = [];
 
     for (let i = 0; i < count; i++) {
       while (true) {
@@ -20,5 +21,9 @@ export const createPositions=(boundary = 4.8, count = 3) =>{
       }
     }
   
-    return positions;
+    if(sapling){
+      return positions[positions.length -1];
+    }else{
+      return positions;
+    }
 }

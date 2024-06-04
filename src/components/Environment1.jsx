@@ -3,7 +3,7 @@ import { Canvas, useLoader } from '@react-three/fiber';
 import { Environment, OrbitControls, Plane } from '@react-three/drei';
 import TreeModel from './models/Tree';
 import { TextureLoader } from 'three/src/loaders/TextureLoader';
-import { createRandomPositions } from './utils/createValues';
+import { createRandomPositions, getRandomValues } from './utils/createValues';
 import GrassModel from './models/Grass';
 import TreeSaplingModel from './models/TreeSapling';
 import { v4 as uuidv4 } from 'uuid';
@@ -34,7 +34,8 @@ function Environment1({ count }) {
 
   useEffect(() => {
     if (treePositions.length !== 0) {
-      const treeElements = treePositions.map(pos => <TreeModel key={uuidv4()} position={pos} scale = {[0.17, 0.25, 0.17]} />);
+      let val = getRandomValues(0.002,0.007,treePositions.length);
+      const treeElements = treePositions.map((pos, i) => <TreeModel key={uuidv4()} position={pos} scale = {[val[i], val[i], val[i]]} />);
       setTrees(treeElements);
     }
   }, [treePositions]);
@@ -47,7 +48,7 @@ function Environment1({ count }) {
         if(position === null)
           console.log("No more positions left");
         else
-          setTrees(prevTrees => [...prevTrees, <TreeModel key={uuidv4()} position={position} scale = {[0.17, 0.25, 0.17]} />]);
+          setTrees(prevTrees => [...prevTrees, <TreeModel key={uuidv4()} position={position} scale = {[0.006, 0.006, 0.006]} />]);
       } else {
         position = createRandomPositions(4.8, 1, treePositions, true);
         if(position === null)

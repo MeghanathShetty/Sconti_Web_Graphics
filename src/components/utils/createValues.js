@@ -76,3 +76,11 @@ export const createLinearPositions = (
 
   return addOneMore ? positions[positions.length - 1] : positions;
 };
+
+export const getRandomValues = (min, max, count) => {
+  let values = [];
+  for (let i = 0; i < count; i++) {
+    values.push(Math.random() * (max - min) + min);
+  }
+  return values;
+}

@@ -1,10 +1,10 @@
 import React, { Suspense } from 'react';
 import { Canvas, useLoader } from '@react-three/fiber';
 import { Environment, OrbitControls, Plane} from '@react-three/drei';
-import TreeModel from './models/TreeModel';
+import TreeModel from './models/Tree';
 import { TextureLoader } from 'three/src/loaders/TextureLoader';
-import { createRandomPositions, createLinearPositions } from './utils/createPositions';
-import GrassModel from './models/GrassModel';
+import { createRandomPositions, createLinearPositions } from './utils/createValues';
+import GrassModel from './models/Grass';
 
 
 function Environment1({count = 1700}) {

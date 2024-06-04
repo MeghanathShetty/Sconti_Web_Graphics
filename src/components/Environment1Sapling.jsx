@@ -1,10 +1,10 @@
 import React, { Suspense, useEffect, useState } from 'react';
 import { Canvas, useLoader } from '@react-three/fiber';
 import { Environment, OrbitControls, Plane } from '@react-three/drei';
-import TreeModel from './models/TreeModel';
+import TreeModel from './models/Tree';
 import { TextureLoader } from 'three/src/loaders/TextureLoader';
-import { createRandomPositions, createLinearPositions } from './utils/createPositions';
-import GrassModel from './models/GrassModel';
+import { createRandomPositions, createLinearPositions } from './utils/createValues';
+import GrassModel from './models/Grass';
 import TreeSaplingModel from './models/TreeSapling';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -36,7 +36,7 @@ function Environment1Sapling({ count = -1 }) {
 
   useEffect(() => {
     if (treePositions.length !== 0) {
-      const treeElements = treePositions.map(pos => <TreeModel key={uuidv4()} position={pos} />);
+      const treeElements = treePositions.map(pos => <TreeModel key={uuidv4()} position={pos} scale = {[0.17, 0.25, 0.17]} />);
       setTrees(treeElements);
     }
   }, [treePositions]);
@@ -46,18 +46,16 @@ function Environment1Sapling({ count = -1 }) {
       let position;
       if (score > 7) {
         position = createLinearPositions(4.8, 1, treePositions, true);
-        // console.log(position)
         if(position === null)
           console.log("No more positions left");
         else
-          setTrees(prevTrees => [...prevTrees, <TreeModel key={uuidv4()} position={position} />]);
+          setTrees(prevTrees => [...prevTrees, <TreeModel key={uuidv4()} position={position} scale = {[0.17, 0.25, 0.17]} />]);
       } else {
         position = createLinearPositions(4.8, 1, treePositions, true);
-        // console.log(position)
         if(position === null)
           console.log("No more positions left");
         else
-          setTrees(prevTrees => [...prevTrees, <TreeSaplingModel key={uuidv4()} position={position} />]);
+          setTrees(prevTrees => [...prevTrees, <TreeSaplingModel key={uuidv4()} position={position} scale = {[0.0017, 0.0023, 0.0017]} />]);
       }
     }
   }, [score, scoreChanged]);

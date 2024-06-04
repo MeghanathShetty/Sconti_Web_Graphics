@@ -8,7 +8,7 @@ import GrassModel from './models/Grass';
 import TreeSaplingModel from './models/TreeSapling';
 import { v4 as uuidv4 } from 'uuid';
 
-function Environment1Sapling({ count = -1 }) {
+function Environment1Sapling({ count }) {
   const texture = useLoader(TextureLoader, '/textures/ground1.jpg');
   const [trees, setTrees] = useState([]);
   const [treePositions, setTreePositions] = useState([]);
@@ -22,16 +22,14 @@ function Environment1Sapling({ count = -1 }) {
   }
 
   useEffect(() => {
-    const grassPositions = createRandomPositions(4.2, 75);
+    const grassPositions = createRandomPositions(4.2, 97);
     const grassElements = grassPositions.map(pos => <GrassModel key={uuidv4()} position={pos} />);
     setGrass(grassElements);
   }, []);
 
   useEffect(() => {
-    if (count !== -1) {
       const positions = createLinearPositions(4.8, count);
       setTreePositions(positions);
-    }
   }, [count]);
 
   useEffect(() => {

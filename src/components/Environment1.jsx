@@ -1,42 +1,88 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { Canvas, useLoader } from '@react-three/fiber';
-import { Environment, OrbitControls, Plane} from '@react-three/drei';
+import { Environment, OrbitControls, Plane } from '@react-three/drei';
 import TreeModel from './models/Tree';
 import { TextureLoader } from 'three/src/loaders/TextureLoader';
-import { createRandomPositions, createLinearPositions } from './utils/createValues';
+import { createRandomPositions } from './utils/createValues';
 import GrassModel from './models/Grass';
+import TreeSaplingModel from './models/TreeSapling';
+import { v4 as uuidv4 } from 'uuid';
 
-
-function Environment1({count = 1700}) {
+function Environment1({ count }) {
   const texture = useLoader(TextureLoader, '/textures/ground1.jpg');
+  const [trees, setTrees] = useState([]);
+  const [treePositions, setTreePositions] = useState([]);
+  const [grass, setGrass] = useState([]);
+  const [score, setScore] = useState(-1);
+  const [scoreChanged, setScoreChanged] = useState(false);
 
-  let trees = [];
-  let treePositions = createLinearPositions( 4.8, count, [], false, 0.8, 0.8);
-  
-  for(let i=0;i<count;i++) {
-    trees.push(<TreeModel key={`tree ${i}`} position={treePositions[i]}/>);
+  function handleScore(val) {
+    setScore(Number(val));
+    setScoreChanged(prev => !prev); // Toggle the scoreChanged flag, to call useEffect
   }
 
-  let grass = [];
-  let grassPositions = createRandomPositions(4.2, 75)
-  
-  for(let i=0;i<75;i++) {
-    grass.push(<GrassModel key={`tree ${i}`} position={grassPositions[i]}/>);
-  }
+  useEffect(() => {
+    const grassPositions = createRandomPositions(4.2, 75);
+    const grassElements = grassPositions.map(pos => <GrassModel key={uuidv4()} position={pos} />);
+    setGrass(grassElements);
+  }, []);
+
+  useEffect(() => {
+      const positions = createRandomPositions(4.8, count);
+      setTreePositions(positions);
+  }, [count]);
+
+  useEffect(() => {
+    if (treePositions.length !== 0) {
+      const treeElements = treePositions.map(pos => <TreeModel key={uuidv4()} position={pos} scale = {[0.17, 0.25, 0.17]} />);
+      setTrees(treeElements);
+    }
+  }, [treePositions]);
+
+  useEffect(() => {
+    if (score !== -1) {
+      let position;
+      if (score > 7) {
+        position = createRandomPositions(4.8, 1, treePositions, true);
+        if(position === null)
+          console.log("No more positions left");
+        else
+          setTrees(prevTrees => [...prevTrees, <TreeModel key={uuidv4()} position={position} scale = {[0.17, 0.25, 0.17]} />]);
+      } else {
+        position = createRandomPositions(4.8, 1, treePositions, true);
+        if(position === null)
+          console.log("No more positions left");
+        else
+          setTrees(prevTrees => [...prevTrees, <TreeSaplingModel key={uuidv4()} position={position} scale = {[0.0017, 0.0023, 0.0017]} />]);
+      }
+    }
+  }, [score, scoreChanged]);
+
   return (
-    <Canvas>
-      <ambientLight intensity={0.6} />
-      <pointLight position={[10, 10, 10]} />
-      <OrbitControls />
-      <Environment preset='park' />
-      <Suspense fallback={null}>
-        <Plane args={[10, 10]} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
-          <meshStandardMaterial map={texture} color='#d18b86'/>
-        </Plane>
-        {grass}
-        {trees}
-      </Suspense>
-    </Canvas>
+    <>
+      <input
+        type='number'
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            handleScore(e.target.value);
+            e.target.value = '';
+          }
+        }}
+      />
+      <Canvas>
+        <ambientLight intensity={0.9} />
+        <pointLight position={[10, 10, 10]} />
+        <OrbitControls />
+        <Environment preset='sunset' />
+        <Suspense fallback={null}>
+          <Plane args={[10, 10]} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
+            <meshStandardMaterial map={texture} color='#459651' />
+          </Plane>
+          {grass}
+          {trees}
+        </Suspense>
+      </Canvas>
+    </>
   );
 }
 

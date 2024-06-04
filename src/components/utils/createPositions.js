@@ -1,29 +1,73 @@
 
-export const createPositions=(boundary = 4.8, count = 3, positions = [], sapling = false) =>{
+export const createRandomPositions=(boundary = 4.8, count = 3, positions = [], addOneMore = false) => {
+  if (addOneMore) count = 1; // extra validation
+  for (let i = 0; i < count; i++) {
+    while (true) {
+      let newX = Math.random() * (boundary - (-boundary)) + (-boundary);
+      let newZ = Math.random() * (boundary - (-boundary)) + (-boundary);
+      let newY=0;
 
-    // let positions = [];
+      // Check if the new position is already there
+      let positionExists = positions.some(([existingX, existingY, existingZ]) => {
+        return existingX === newX && existingY === newY && existingZ === newZ;
+      });
 
-    for (let i = 0; i < count; i++) {
-      while (true) {
-        let newX = Math.random() * (boundary - (-boundary)) + (-boundary);
-        let newZ = Math.random() * (boundary - (-boundary)) + (-boundary);
-        let newY=0;
-  
-        // Check if the new position is already there
-        let positionExists = positions.some(([existingX, existingY, existingZ]) => {
-          return existingX === newX && existingY === newY && existingZ === newZ;
-        });
-  
-        if (!positionExists) {
-          positions.push([newX, newY, newZ]);
-          break;
-        }
+      if (!positionExists) {
+        positions.push([newX, newY, newZ]);
+        break;
       }
     }
-  
-    if(sapling){
-      return positions[positions.length -1];
-    }else{
-      return positions;
-    }
+  }
+
+  return addOneMore ? positions[positions.length - 1] : positions;
 }
+
+export const createLinearPositions = (
+  boundary = 4.8,
+  count = 3,
+  positions = [],
+  addOneMore = false,
+  gapX = 0.8,
+  gapY = 0.8
+) => {
+  let minBound = -(boundary);
+  let maxBound = boundary;
+
+  let newX = maxBound;
+  let newY = 0;
+  let newZ = maxBound;
+
+  let placedCount = 0; // Track placed positions
+
+  if (positions.length !== 0) {
+    let prevLastPosition = positions[positions.length - 1];
+    newX = prevLastPosition[0];
+    newY = prevLastPosition[1];
+    newZ = prevLastPosition[2];
+
+    if (newX > minBound) {
+      newX -= gapX;
+    } else {
+      newZ -= gapY;
+      newX = maxBound;
+    }
+  }
+
+  if (addOneMore) count = 1;
+
+  while (placedCount < count && newX >= minBound && newZ >= minBound) {
+    positions.push([newX, newY, newZ]);
+    placedCount++;
+
+    if(!addOneMore) { // not mandatory if condition
+      if (newX > minBound) {
+        newX -= gapX;
+      } else {
+        newZ -= gapY;
+        newX = maxBound;
+      }
+    }
+  }
+
+  return addOneMore ? positions[positions.length - 1] : positions;
+};

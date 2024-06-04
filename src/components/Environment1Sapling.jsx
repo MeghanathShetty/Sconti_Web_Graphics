@@ -30,7 +30,6 @@ function Environment1Sapling({ count = -1 }) {
   useEffect(() => {
     if (count !== -1) {
       const positions = createLinearPositions(4.8, count);
-      console.log(positions);
       setTreePositions(positions);
     }
   }, [count]);
@@ -73,7 +72,7 @@ function Environment1Sapling({ count = -1 }) {
         <Environment preset='sunset' />
         <Suspense fallback={null}>
           <Plane args={[10, 10]} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
-            <meshStandardMaterial map={texture} color='#d18b86' />
+            <meshStandardMaterial map={texture} color='#bf7830' />
           </Plane>
           {grass}
           {trees}

@@ -11,7 +11,7 @@ function HomePage() {
     <div id='main-container'>
         {/* <Box1 /> */}
         {/* <Environment1 /> */}
-        <Environment1Sapling count={140} />
+        <Environment1Sapling count={155} />
     </div>
   );
 }

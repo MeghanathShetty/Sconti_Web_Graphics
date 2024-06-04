@@ -51,10 +51,15 @@ export const createLinearPositions = (
       newZ -= gapY;
       newX = maxBound;
     }
+
+    if(addOneMore) {
+      if(newX < minBound || newZ < minBound) { // will only be used when addMore is true
+        return null; // exit and send null
+      }
+    }
   }
 
-  if (addOneMore) count = 1;
-
+  if (addOneMore) count = 1; // extra validation
   while (placedCount < count && newX >= minBound && newZ >= minBound) {
     positions.push([newX, newY, newZ]);
     placedCount++;

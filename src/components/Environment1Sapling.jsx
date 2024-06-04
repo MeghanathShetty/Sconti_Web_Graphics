@@ -46,10 +46,18 @@ function Environment1Sapling({ count = -1 }) {
       let position;
       if (score > 7) {
         position = createLinearPositions(4.8, 1, treePositions, true);
-        setTrees(prevTrees => [...prevTrees, <TreeModel key={uuidv4()} position={position} />]);
+        // console.log(position)
+        if(position === null)
+          console.log("No more positions left");
+        else
+          setTrees(prevTrees => [...prevTrees, <TreeModel key={uuidv4()} position={position} />]);
       } else {
         position = createLinearPositions(4.8, 1, treePositions, true);
-        setTrees(prevTrees => [...prevTrees, <TreeSaplingModel key={uuidv4()} position={position} />]);
+        // console.log(position)
+        if(position === null)
+          console.log("No more positions left");
+        else
+          setTrees(prevTrees => [...prevTrees, <TreeSaplingModel key={uuidv4()} position={position} />]);
       }
     }
   }, [score, scoreChanged]);

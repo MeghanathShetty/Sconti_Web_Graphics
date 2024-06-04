@@ -1,11 +1,9 @@
 import React, { Suspense, useEffect, useState } from 'react';
 import { Canvas, useLoader } from '@react-three/fiber';
 import { Environment, OrbitControls, Plane } from '@react-three/drei';
-import TreeModel from './models/Tree';
+import Model from './Model';
 import { TextureLoader } from 'three/src/loaders/TextureLoader';
 import { createRandomPositions, createLinearPositions } from './utils/createValues';
-import GrassModel from './models/Grass';
-import TreeSaplingModel from './models/TreeSapling';
 import { v4 as uuidv4 } from 'uuid';
 
 function Environment1Sapling({ count }) {
@@ -23,7 +21,7 @@ function Environment1Sapling({ count }) {
 
   useEffect(() => {
     const grassPositions = createRandomPositions(4.2, 97);
-    const grassElements = grassPositions.map(pos => <GrassModel key={uuidv4()} position={pos} />);
+    const grassElements = grassPositions.map(pos => <Model key={uuidv4()} position={pos} path={'/grass/anime_grass_2.glb'} />);
     setGrass(grassElements);
   }, []);
 
@@ -34,7 +32,7 @@ function Environment1Sapling({ count }) {
 
   useEffect(() => {
     if (treePositions.length !== 0) {
-      const treeElements = treePositions.map(pos => <TreeModel key={uuidv4()} position={pos} scale = {[0.17, 0.25, 0.17]} />);
+      const treeElements = treePositions.map(pos => <Model key={uuidv4()} position={pos} scale = {[0.17, 0.25, 0.17]} path={'/trees/coconut_tree.glb'}/>);
       setTrees(treeElements);
     }
   }, [treePositions]);
@@ -47,13 +45,13 @@ function Environment1Sapling({ count }) {
         if(position === null)
           console.log("No more positions left");
         else
-          setTrees(prevTrees => [...prevTrees, <TreeModel key={uuidv4()} position={position} scale = {[0.17, 0.25, 0.17]} />]);
+          setTrees(prevTrees => [...prevTrees, <Model key={uuidv4()} position={position} scale = {[0.17, 0.25, 0.17]} path={'/trees/coconut_tree.glb'} />]);
       } else {
         position = createLinearPositions(4.8, 1, treePositions, true);
         if(position === null)
           console.log("No more positions left");
         else
-          setTrees(prevTrees => [...prevTrees, <TreeSaplingModel key={uuidv4()} position={position} scale = {[0.0017, 0.0023, 0.0017]} />]);
+          setTrees(prevTrees => [...prevTrees, <Model key={uuidv4()} position={position} scale = {[0.0017, 0.0023, 0.0017]} path={'/trees/treesapling.glb'} />]);
       }
     }
   }, [score, scoreChanged]);

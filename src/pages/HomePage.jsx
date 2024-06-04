@@ -10,7 +10,7 @@ function HomePage() {
   return (
     <div id='main-container'>
         {/* <Box1 /> */}
-        {/* <Environment1 count={139}/> */}
+        {/* <Environment1 count={139} /> */}
         <Environment1Sapling count={73} />
     </div>
   );

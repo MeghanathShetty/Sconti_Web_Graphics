@@ -1,18 +1,23 @@
+const isTooClose = (positions, newX, newY, newZ, radius) => {
+  return positions.some(([existingX, existingY, existingZ]) => {
+    const distance = Math.sqrt(
+      Math.pow(existingX - newX, 2) + 
+      Math.pow(existingY - newY, 2) + 
+      Math.pow(existingZ - newZ, 2)
+    );
+    return distance < radius;
+  });
+};
 
-export const createRandomPositions=(boundary = 4.8, count = 3, positions = [], addOneMore = false) => {
+export const createRandomPositions=(boundary = 4.8, count = 3, positions = [], addOneMore = false, Y = 0, radius = 0) => {
   if (addOneMore) count = 1; // extra validation
   for (let i = 0; i < count; i++) {
     while (true) {
       let newX = Math.random() * (boundary - (-boundary)) + (-boundary);
       let newZ = Math.random() * (boundary - (-boundary)) + (-boundary);
-      let newY=0;
+      let newY=Y;
 
-      // Check if the new position is already there
-      let positionExists = positions.some(([existingX, existingY, existingZ]) => {
-        return existingX === newX && existingY === newY && existingZ === newZ;
-      });
-
-      if (!positionExists) {
+      if (!isTooClose(positions, newX, newY, newZ, radius)) {
         positions.push([newX, newY, newZ]);
         break;
       }
@@ -83,4 +88,91 @@ export const getRandomValues = (min, max, count) => {
     values.push(Math.random() * (max - min) + min);
   }
   return values;
+}
+
+export const createLinearPositionsYAxis = (boundary = 1,
+   count = 3, 
+   positions = [], 
+   addOneMore = false,
+   gapY = 0.056,
+   radius = 0.35,
+   minStack = 4,
+   stackSize = 10,
+   fixedStackSize = false,
+   x = 1,
+   y = 1.94,
+   z = 0) => {
+
+  let stack = 0;
+  let tempStackSize = stackSize;
+  let newX = x;
+  let newY = y;
+  let newZ = z;
+  let XZList = [];
+
+  if (positions.length !== 0) {
+    let prevLastPosition = positions[positions.length - 1];
+    newX = prevLastPosition[0];
+    newY = prevLastPosition[1];
+    newZ = prevLastPosition[2];
+
+    let tempStackSize;
+    if(!fixedStackSize)  
+      tempStackSize = Math.random() * (stackSize - minStack) + stackSize;
+    else
+      tempStackSize = stackSize;
+
+    if(newY > ((gapY * tempStackSize)+y)) {
+      let xt;
+      let zt;
+      newY = y;
+      while(true) {
+        xt = Math.random() * (boundary - (-boundary)) + (-boundary);
+        zt = Math.random() * (boundary - (-boundary)) + (-boundary);
+        if (!isTooClose(positions, xt, newY, zt, radius)) {
+          XZList.push([xt, zt]);
+          break;
+        }
+      }
+      XZList.push([xt,zt]);
+      newX = xt;
+      newZ = zt;
+    } else {
+      newY += gapY;
+    }
+    positions.push([newX, newY, newZ]);
+  }
+
+  if(addOneMore) return positions[positions.length - 1];
+
+  for (let i = 0; i < count; i++) {
+
+    if(stack >= tempStackSize) {
+      if(!fixedStackSize) {
+        tempStackSize = Math.random() * (stackSize - minStack) + stackSize;
+      }
+      let xt;
+      let zt;
+      while(true) {
+        newY = y;
+        xt = Math.random() * (boundary - (-boundary)) + (-boundary);
+        zt = Math.random() * (boundary - (-boundary)) + (-boundary);
+        if (!isTooClose(positions, xt, newY, zt, radius)) {
+          XZList.push([xt, zt]);
+          break;
+        }
+      }
+      XZList.push([xt,zt]);
+      newX = xt;
+      newZ = zt;
+      stack = 0;
+      positions.push([newX, newY, newZ]);
+    } else {
+      positions.push([newX, newY, newZ]);
+      newY += gapY
+      stack += 1;
+    }
+  }
+
+  return positions;
 }

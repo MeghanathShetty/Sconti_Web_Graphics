@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
-const Model = ({ position = [0,0,0] , scale = [0.17, 0.25, 0.17] , path = '/trees/coconut_tree.glb'}) => {
+const Model = ({ position = [0,0,0] , scale = [0.17, 0.25, 0.17] , path = '/trees/coconut_tree.glb', rotate=[0, 0, 0]}) => {
   const [gltf, setGltf] = useState(null);
 
   useEffect(() => {
@@ -13,7 +13,7 @@ const Model = ({ position = [0,0,0] , scale = [0.17, 0.25, 0.17] , path = '/tree
 
   return (
     <>
-      {gltf && <primitive object={gltf.scene} position={position} scale={scale}/>}
+      {gltf && <primitive object={gltf.scene} position={position} scale={scale} rotation={rotate}/>}
     </>
   );
 };

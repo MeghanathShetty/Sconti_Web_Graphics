@@ -4,6 +4,7 @@ import { Canvas } from '@react-three/fiber';
 import "../css/homepage.css";
 import Environment1 from '../components/Environment1';
 import Environment1Sapling from '../components/Environment1Sapling';
+import EnvironmentApple from '../components/EnvironmentApple';
 
 function HomePage() {
 
@@ -11,7 +12,10 @@ function HomePage() {
     <div id='main-container'>
         {/* <Box1 /> */}
         {/* <Environment1 count={139} /> */}
-        <Environment1Sapling count={73} />
+        {/* <Environment1Sapling count={73} /> */}
+        {/* <EnvironmentApple count={10} /> */}
+
+        <EnvironmentApple count={10} />
     </div>
   );
 }

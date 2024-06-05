@@ -1,18 +1,23 @@
+const isTooClose = (positions, newX, newY, newZ, radius) => {
+  return positions.some(([existingX, existingY, existingZ]) => {
+    const distance = Math.sqrt(
+      Math.pow(existingX - newX, 2) + 
+      Math.pow(existingY - newY, 2) + 
+      Math.pow(existingZ - newZ, 2)
+    );
+    return distance < radius;
+  });
+};
 
-export const createRandomPositions=(boundary = 4.8, count = 3, positions = [], addOneMore = false) => {
+export const createRandomPositions=(boundary = 4.8, count = 3, positions = [], addOneMore = false, Y = 0, radius = 0) => {
   if (addOneMore) count = 1; // extra validation
   for (let i = 0; i < count; i++) {
     while (true) {
       let newX = Math.random() * (boundary - (-boundary)) + (-boundary);
       let newZ = Math.random() * (boundary - (-boundary)) + (-boundary);
-      let newY=0;
+      let newY=Y;
 
-      // Check if the new position is already there
-      let positionExists = positions.some(([existingX, existingY, existingZ]) => {
-        return existingX === newX && existingY === newY && existingZ === newZ;
-      });
-
-      if (!positionExists) {
+      if (!isTooClose(positions, newX, newY, newZ, radius)) {
         positions.push([newX, newY, newZ]);
         break;
       }
@@ -21,7 +26,6 @@ export const createRandomPositions=(boundary = 4.8, count = 3, positions = [], a
 
   return addOneMore ? positions[positions.length - 1] : positions;
 }
-
 export const createLinearPositions = (
   boundary = 4.8,
   count = 3,

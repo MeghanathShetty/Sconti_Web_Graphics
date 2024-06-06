@@ -1,15 +1,42 @@
-const isTooClose = (positions, newX, newY, newZ, radius) => {
-  return positions.some(([existingX, existingY, existingZ]) => {
-    const distance = Math.sqrt(
-      Math.pow(existingX - newX, 2) + 
-      Math.pow(existingY - newY, 2) + 
-      Math.pow(existingZ - newZ, 2)
-    );
-    return distance < radius;
-  });
+const isTooClose = (positions, newX, newY, newZ, radius, ignoreYIsClose) => {
+  if(ignoreYIsClose) {
+    return positions.some(([existingX, existingY, existingZ]) => {
+      const distance = Math.sqrt(
+        Math.pow(existingX - newX, 2) + 
+        Math.pow(existingZ - newZ, 2)
+      );
+      return distance < radius;
+    });
+  } else {
+    return positions.some(([existingX, existingY, existingZ]) => {
+      const distance = Math.sqrt(
+        Math.pow(existingX - newX, 2) + 
+        Math.pow(existingY - newY, 2) + 
+        Math.pow(existingZ - newZ, 2)
+      );
+      return distance < radius;
+    });
+  }
 };
 
-export const createRandomPositions=(boundary = 4.8, count = 3, positions = [], addOneMore = false, Y = 0, radius = 0) => {
+function arraysAreEqual(arr1, arr2) {
+  if (arr1.length !== arr2.length) {
+      return false;
+  }
+  for (let i = 0; i < arr1.length; i++) {
+      if (arr1[i] !== arr2[i]) {
+          return false;
+      }
+  }
+  return true;
+}
+
+export const createRandomPositions=(boundary = 4.8, count = 3,
+  positions = [], addOneMore = false,
+  Y = 0, radius = 0, ignoreYIsClose = false, maxAttempt = 30) => {
+
+  let oldPositions = [...positions];
+
   if (addOneMore) count = 1; // extra validation
   for (let i = 0; i < count; i++) {
     while (true) {
@@ -17,15 +44,26 @@ export const createRandomPositions=(boundary = 4.8, count = 3, positions = [], a
       let newZ = Math.random() * (boundary - (-boundary)) + (-boundary);
       let newY=Y;
 
-      if (!isTooClose(positions, newX, newY, newZ, radius)) {
+      if (!isTooClose(positions, newX, newY, newZ, radius, ignoreYIsClose)) {
         positions.push([newX, newY, newZ]);
         break;
       }
+
+      if(maxAttempt<0) {
+        console.log("No more positions left");
+        break;
+      }
+      maxAttempt--;
     }
+  }
+
+  if(arraysAreEqual(oldPositions,positions)) {
+    return null;
   }
 
   return addOneMore ? positions[positions.length - 1] : positions;
 }
+
 
 export const createLinearPositions = (
   boundary = 4.8,
@@ -110,11 +148,14 @@ export const createLinearPositionsYAxis = (boundary = 1,
   let newZ = z;
   let XZList = [];
 
-  if (positions.length !== 0) {
-    let prevLastPosition = positions[positions.length - 1];
-    newX = prevLastPosition[0];
-    newY = prevLastPosition[1];
-    newZ = prevLastPosition[2];
+  if (addOneMore) {
+    let prevLastPosition;
+    if(positions.length !== 0) {
+      prevLastPosition = positions[positions.length - 1];
+      newX = prevLastPosition[0];
+      newY = prevLastPosition[1];
+      newZ = prevLastPosition[2];
+    }
 
     let tempStackSize;
     if(!fixedStackSize)  

@@ -21,8 +21,9 @@ function MixedEnvironment({ count }) {
     }
 
     useEffect(() => {
-        const grassPositions = createRandomPositions(4.2, 175);
-        const grassElements = grassPositions.map(pos => <Model key={uuidv4()} position={pos} path={'/grass/anime_grass_2.glb'} />);
+        const grassPositions = createRandomPositions(4.5, 175);
+        let val = getRandomValues(0.33, 0.75, grassPositions.length);
+        const grassElements = grassPositions.map((pos, i) => <Model key={uuidv4()} position={pos} path={'/grass/anime_grass_2.glb'} scale = {[0.27, val[i], 0.27]}/>);
         setGrass(grassElements);
     }, []);
   
@@ -30,8 +31,8 @@ function MixedEnvironment({ count }) {
       if (score !== -1) {
         let position;
         if (score <= 5) {
-          position = createRandomPositions(4.8, 1, positions, true, 0, 0);
-          let scaleVal = getRandomValues(0.0018,0.0025,1);
+          position = createRandomPositions(4.8, 1, positions, true, 0, 0.1);
+          let scaleVal = getRandomValues(0.0018,0.0035,1);
           let sc = [scaleVal[0],scaleVal[0],scaleVal[0]];
           if(position === null)
             console.log("No more positions left");
@@ -40,18 +41,18 @@ function MixedEnvironment({ count }) {
             setTreePositions(prev => [...prev, {position, scale : sc, filled : false}]);
           }
         } else if(score >5 && score <= 10) {
-          position = createRandomPositions(4.8, 1, positions, true, 0, 0);
+          position = createRandomPositions(4.8, 1, positions, true, 0, 0.2);
           if(position === null)
             console.log("No more positions left");
           else {
-            setModels(prev => [...prev, <Model key={uuidv4()} position={position} scale={[0.5, 0.5, 0.5]} path={'/humans/person3.glb'}/>]);
+            setModels(prev => [...prev, <Model key={uuidv4()} position={position} scale={[0.35, 0.35, 0.35]} path={'/humans/person4.glb'}/>]);
             }
         } else if(score >10 && score <=15) {
             let filled = false;
             for(const item of treePositions) {
                 if(!item.filled) {
                     const scaleRatio = item.scale[1] / 0.0020;
-                    const increment = scaleRatio * 1.3;
+                    const increment = scaleRatio * 1.35;
 
                     const x = item.position[0];
                     const y = item.position[1] + increment;
@@ -64,14 +65,24 @@ function MixedEnvironment({ count }) {
             }
             if(!filled) console.log("No more trees left");
         } 
-        // else if(score >15 && score <= 20) {
-        //     position = createRandomPositions(3.7, 1, positions, true, 0.07, 0.5, true);
-        //     if(position === null)
-        //       console.log("No more positions left");
-        //     else {
-        //       setModels(prev => [...prev, <Model key={uuidv4()} position={position} scale={[2.5, 0.4, 2.5]} path={'/nature/pond3.glb'}/>]);
-        //       }
-        //   }
+        else if(score >15 && score <= 20) {
+            let val = getRandomValues(2.5,3.3,1);
+            position = createRandomPositions(3.3, 1, positions, true, val[0], 0.1);
+            if(position === null)
+              console.log("No more positions left");
+            else {
+              setModels(prev => [...prev, <Model key={uuidv4()} position={position} scale={[0.1, 0.1, 0.1]} path={'/animals/bird1.glb'}/>]);
+              }
+          }
+        else if(score >20 && score <= 25) {
+          position = createRandomPositions(4.5, 1, positions, true, 0, 0.2);
+          let val = getRandomValues(0.070,0.12,1);
+          if(position === null)
+            console.log("No more positions left");
+          else {
+            setModels(prev => [...prev, <Model key={uuidv4()} position={position} scale={[val[0],val[0],val[0]]} path={'/animals/cow2.glb'}/>]);
+            }
+        }
       }
     }, [score, scoreChanged]);
 
@@ -87,7 +98,7 @@ function MixedEnvironment({ count }) {
         }}
       />
       <Canvas>
-        <ambientLight intensity={0.9} />
+        <ambientLight intensity={0.5} />
         <pointLight position={[10, 10, 10]} />
         <OrbitControls />
         <Environment preset='sunset' />

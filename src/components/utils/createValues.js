@@ -139,7 +139,7 @@ export const createLinearPositionsYAxis = (boundary = 1,
    fixedStackSize = false,
    x = 1,
    y = 1.94,
-   z = 0) => {
+   z = 0, maxAttempt = 30) => {
 
   let stack = 0;
   let tempStackSize = stackSize;
@@ -174,6 +174,13 @@ export const createLinearPositionsYAxis = (boundary = 1,
           XZList.push([xt, zt]);
           break;
         }
+
+        if(maxAttempt<0) {
+          console.log("No more positions left");
+          // break;
+          return;
+        }
+        maxAttempt--;
       }
       XZList.push([xt,zt]);
       newX = xt;
@@ -200,8 +207,15 @@ export const createLinearPositionsYAxis = (boundary = 1,
         zt = Math.random() * (boundary - (-boundary)) + (-boundary);
         if (!isTooClose(positions, xt, newY, zt, radius)) {
           XZList.push([xt, zt]);
+          // break;
+          return;
+        }
+
+        if(maxAttempt<0) {
+          console.log("No more positions left");
           break;
         }
+        maxAttempt--;
       }
       XZList.push([xt,zt]);
       newX = xt;

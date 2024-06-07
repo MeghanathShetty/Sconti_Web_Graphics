@@ -33,7 +33,7 @@ function EnvironmentApple({ count }) {
   useEffect(() => {
     if (applePositions.length !== 0) {
       let val = getRandomValues(0.5,0.8,applePositions.length);
-      const appleElements = applePositions.map((pos, i) => <Model key={uuidv4()} position={pos} scale={[val[i], val[i], val[i]]} path={'/apple/low_poly_apple_game_ready.glb'} />);
+      const appleElements = applePositions.map((pos, i) => <Model key={uuidv4()} position={pos} scale={[val[i], val[i], val[i]]} path={'/fruits_and_vegies/low_poly_apple_game_ready.glb'} />);
       setApple(appleElements);
     }
   }, [applePositions]);
@@ -46,13 +46,13 @@ function EnvironmentApple({ count }) {
         if(position === null)
           console.log("No more positions left");
         else
-          setApple(prevapple => [...prevapple, <Model key={uuidv4()} position={position} scale = {[0.8, 0.8, 0.8]} path={'/apple/low_poly_apple_game_ready.glb'} />]);
+          setApple(prevapple => [...prevapple, <Model key={uuidv4()} position={position} scale = {[0.8, 0.8, 0.8]} path={'/fruits_and_vegies/low_poly_apple_game_ready.glb'} />]);
       } else {
         position = createRandomPositions(1, 1, applePositions, true,3.3,0.5);
         if(position === null)
           console.log("No more positions left");
         else
-          setApple(prevapple => [...prevapple, <Model key={uuidv4()} position={position} scale = {[0.006, 0.006, 0.006]} path={'/orange/orange.glb'} />]);
+          setApple(prevapple => [...prevapple, <Model key={uuidv4()} position={position} scale = {[0.006, 0.006, 0.006]} path={'/fruits_and_vegies/orange.glb'} />]);
       }
     }
   }, [score, scoreChanged]);
@@ -77,7 +77,7 @@ function EnvironmentApple({ count }) {
           <Plane args={[10, 10]} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
             <meshStandardMaterial map={texture} color="#808836"/>
           </Plane>
-          <Model position={[0,0,0]} scale = {[5, 4, 5]} path={'/table/picnic_table_-_low_poly.glb'} />
+          <Model position={[0,0,0]} scale = {[5, 4, 5]} path={'/tables/picnic_table_-_low_poly.glb'} />
           {apple}
           {grass}
         </Suspense>

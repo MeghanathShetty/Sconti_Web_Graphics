@@ -42,13 +42,13 @@ function EnvironmentApple({ count }) {
     if (score !== -1) {
       let position;
       if (score > 7) {
-        position = createRandomPositions(1, 1, applePositions, true,3.1,0.5);
+        position = createRandomPositions(1, 1, applePositions, true,3.1,0.7);
         if(position === null)
           console.log("No more positions left");
         else
           setApple(prevapple => [...prevapple, <Model key={uuidv4()} position={position} scale = {[0.8, 0.8, 0.8]} path={'/fruits_and_vegies/low_poly_apple_game_ready.glb'} />]);
       } else {
-        position = createRandomPositions(1, 1, applePositions, true,3.3,0.5);
+        position = createRandomPositions(1, 1, applePositions, true,3.3,0.7);
         if(position === null)
           console.log("No more positions left");
         else

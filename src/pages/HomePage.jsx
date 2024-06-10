@@ -13,10 +13,10 @@ function HomePage() {
   return (
     <div id='main-container'>
         {/* <Box1 /> */}
-        <CoinEnvironment count = {5} />
-        {/* <EnvironmentApple count= {7} /> */}
+        {/* <CoinEnvironment count = {5} /> */}
+        {/* <EnvironmentApple count= {4} /> */}
         {/* <Environment1 count={10} /> */}
-        {/* <MixedEnvironment count={9} /> */}
+        <MixedEnvironment count={9} />
         {/* <Environment1Sapling count={9} /> */}
     </div>
   );

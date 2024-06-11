@@ -15,10 +15,16 @@ function HomePage() {
     <div id='main-container'>
         {/* <Box1 /> */}
         {/* <CoinEnvironment count = {5} /> */}
+<<<<<<< HEAD
         {/* <EnvironmentApple count= {7} /> */}
         {/* <Environment1 count={125} /> */}
         <LargeEnvironment />
         {/* <MixedEnvironment count={9} /> */}
+=======
+        {/* <EnvironmentApple count= {4} /> */}
+        {/* <Environment1 count={10} /> */}
+        <MixedEnvironment count={9} />
+>>>>>>> 8456fc629e6e6168d3167c804ce226b2f549fd0e
         {/* <Environment1Sapling count={9} /> */}
     </div>
   );

@@ -7,6 +7,7 @@ import Environment1Sapling from '../components/Environments/Environment1Sapling'
 import CoinEnvironment from '../components/Environments/CoinEnvironment';
 import EnvironmentApple from '../components/Environments/EnvironmentApple';
 import MixedEnvironment from '../components/Environments/MixedEnvironment';
+import LargeEnvironment from '../components/Environments/LargeEnvironment';
 
 function HomePage() {
 
@@ -15,8 +16,9 @@ function HomePage() {
         {/* <Box1 /> */}
         {/* <CoinEnvironment count = {5} /> */}
         {/* <EnvironmentApple count= {7} /> */}
-        {/* <Environment1 count={10} /> */}
-        <MixedEnvironment count={9} />
+        {/* <Environment1 count={125} /> */}
+        <LargeEnvironment />
+        {/* <MixedEnvironment count={9} /> */}
         {/* <Environment1Sapling count={9} /> */}
     </div>
   );

@@ -31,6 +31,14 @@ function arraysAreEqual(arr1, arr2) {
   return true;
 }
 
+export const getRandomValues = (min, max, count) => {
+  let values = [];
+  for (let i = 0; i < count; i++) {
+    values.push(Math.random() * (max - min) + min);
+  }
+  return values;
+}
+
 export const createRandomPositions=(boundary = 4.8, count = 3,
   positions = [], addOneMore = false,
   Y = 0, radius = 0, ignoreYIsClose = false, maxAttempt = 30) => {
@@ -64,6 +72,37 @@ export const createRandomPositions=(boundary = 4.8, count = 3,
   return addOneMore ? positions[positions.length - 1] : positions;
 }
 
+export const createRandomPositionsSecluded=(minX, maxX, minZ, maxZ, Y, count = 3,
+  positions = [], addOneMore = false, radius = 0, ignoreYIsClose = false, maxAttempt = 30) => {
+
+  let oldPositions = [...positions];
+
+  if (addOneMore) count = 1; // extra validation
+  for (let i = 0; i < count; i++) {
+    while (true) {
+      let newX = Math.random() * (maxX - minX) + minX;
+      let newZ = Math.random() * (maxZ - minZ) + minZ;
+      let newY=Y;
+
+      if (!isTooClose(positions, newX, newY, newZ, radius, ignoreYIsClose)) {
+        positions.push([newX, newY, newZ]);
+        break;
+      }
+
+      if(maxAttempt<0) {
+        console.log("No more positions left");
+        break;
+      }
+      maxAttempt--;
+    }
+  }
+
+  if(arraysAreEqual(oldPositions,positions)) {
+    return null;
+  }
+
+  return addOneMore ? positions[positions.length - 1] : positions;
+}
 
 export const createLinearPositions = (
   boundary = 4.8,
@@ -119,14 +158,6 @@ export const createLinearPositions = (
 
   return addOneMore ? positions[positions.length - 1] : positions;
 };
-
-export const getRandomValues = (min, max, count) => {
-  let values = [];
-  for (let i = 0; i < count; i++) {
-    values.push(Math.random() * (max - min) + min);
-  }
-  return values;
-}
 
 export const createLinearPositionsYAxis = (boundary = 1,
    count = 3, 

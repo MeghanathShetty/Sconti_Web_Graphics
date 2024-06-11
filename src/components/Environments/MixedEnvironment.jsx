@@ -22,7 +22,7 @@ function MixedEnvironment({ count }) {
 
     useEffect(() => {
         const grassPositions = createRandomPositions(4.5, 175);
-        let val = getRandomValues(0.33, 0.75, grassPositions.length);
+        let val = getRandomValues(0.33, 0.70, grassPositions.length);
         const grassElements = grassPositions.map((pos, i) => <Model key={uuidv4()} position={pos} path={'/grass/anime_grass_2.glb'} scale = {[0.27, val[i], 0.27]}/>);
         setGrass(grassElements);
     }, []);

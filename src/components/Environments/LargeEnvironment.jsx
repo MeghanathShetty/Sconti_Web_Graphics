@@ -20,10 +20,11 @@ function LargeEnvironment({ count }) {
     const [grassRocks, setGrassRocks] = useState([]);
     const [tractors, setTractors] = useState([]);
     const [tractorData, setTractorData] = useState([]);
+    const [cropSet, setCropSet] = useState([]);
 
     useEffect(() => {
       let val;
-      const grassPositions = createRandomPositions(21.5, 175);
+      const grassPositions = createRandomPositions(22, 250);
       val = getRandomValues(0.7, 1.3, grassPositions.length);
       const grassElements = grassPositions.map((pos, i) => <Model key={uuidv4()} position={pos} path={'/grass/anime_grass_2.glb'} scale = {[1.7, val[i], 1.7]}/>);
       setGrassRocks(grassElements);
@@ -79,11 +80,30 @@ function LargeEnvironment({ count }) {
         <Model key={uuidv4()} position={[0.2,0,19]} scale={[2,2,2]} path={'/nature/bush1.glb'} rotate={[0, Math.PI/2, 0]}/>,
         // shed
         <Model key={uuidv4()} position={[2.8,0,12]} path={'/farm/shed1.glb'} scale = {[0.5, 1, 0.5]} rotate={[0 , Math.PI, 0]}/>,
+        // tree
+        <Model key={uuidv4()} position={[19.8,0,5]} path={'/trees/tree3.glb'} scale = {[0.55, 0.55 ,0.55]} />,
+        <Model key={uuidv4()} position={[17.8,0,5]} path={'/trees/tree3.glb'} scale = {[0.47, 0.47 ,0.47]} />,
+
+        <Model key={uuidv4()} position={[23.4,0,7]} path={'/trees/tree4.glb'} scale = {[1.25,1.5,1.25]} />,
         // fences
         <Model key={uuidv4()} position={[3.1,0.7,7]} path={'/farm/wood_fence2.glb'} scale = {[0.13, 0.15, 0.15]}/>,
         <Model key={uuidv4()} position={[19.7,0.7,7]} path={'/farm/wood_fence2.glb'} scale = {[0.17, 0.15, 0.15]}/>
     ])
     },[]);
+
+    useEffect(() => {
+      setCropSet([
+        // bamboo
+        <Model key={uuidv4()} position={[-24, 0, -24]} path={'/nature/bamboo.glb'} scale={[2,2,2]} />,
+        <Model key={uuidv4()} position={[-24, 0, -23]} path={'/nature/bamboo.glb'} scale={[1,1,1]} />,
+        <Model key={uuidv4()} position={[-21, 0, -23]} path={'/nature/bamboo.glb'} scale={[1,1,1]} />,
+        <Model key={uuidv4()} position={[-23, 0, -23]} path={'/nature/bamboo.glb'} scale={[1.5,1.5,1.5]} />,
+        <Model key={uuidv4()} position={[-22, 0, -24]} path={'/nature/bamboo.glb'} scale={[2,2,2]} />,
+        // rock
+        <Model key={uuidv4()} position={[-16, 0.5, -23]} path={'/rocks/rock2.glb'} scale={[5,5,4]} rotate={[0,0,0]}/>,
+        <Model key={uuidv4()} position={[-13, 0.5, -23]} path={'/rocks/rock2.glb'} scale={[5,5,4]} rotate={[0,Math.PI/2,Math.PI/2]}/>,
+      ]);
+    }, []);    
 
     useEffect(() => {
       if (score !== -1) {
@@ -194,18 +214,23 @@ function LargeEnvironment({ count }) {
       <Canvas>
         <ambientLight intensity={0.5} />
         <pointLight position={[10, 10, 10]} />
-        <OrbitControls />
-        <Environment preset='sunset' />
+        <OrbitControls
+          enableZoom={false}
+          minPolarAngle={1} // Restrict vertical rotation to fixed angle
+          maxPolarAngle={1}
+          target={[0, 0, 0]} // Look at the center of the scene
+          enablePan={false} // Disable panning
+          rotation={0}
+        />
+        <Environment preset='forest' />
         <Suspense fallback={null}>
           <Plane args={[50, 50]} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
-            <meshStandardMaterial map={texture} color='#459651'/>
+            <meshStandardMaterial map={texture} color='#1A5D1A'/>
           </Plane>
 
           {/* testing */}
           {/* <Model key={uuidv4()} position={[-24,0,8]} scale={[0.01,0.01,0.01]} path={'/trees/coconut_tree2.glb'}/> */}
           {grassRocks}
-
-          
 
           {barnSet}
           {cows}
@@ -213,6 +238,7 @@ function LargeEnvironment({ count }) {
           {tractorSet}
           {tractors}
 
+          {cropSet}
           {crops}
           {cropFruit}
         </Suspense>

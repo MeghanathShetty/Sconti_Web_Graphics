@@ -14,12 +14,12 @@ function HomePage() {
 
   return (
     <div id='main-container'>
-        <HumanEnvironment />
+{/*         <HumanEnvironment /> */}
         {/* <Box1 /> */}
         {/* <CoinEnvironment count = {5} /> */}
         {/* <EnvironmentApple count= {7} /> */}
         {/* <Environment1 count={125} /> */}
-        {/* <LargeEnvironment /> */}
+        <LargeEnvironment />
         {/* <MixedEnvironment count={9} /> */}
         {/* <Environment1Sapling count={9} /> */}
     </div>

@@ -214,14 +214,15 @@ function LargeEnvironment({ count }) {
       <Canvas>
         <ambientLight intensity={0.5} />
         <pointLight position={[10, 10, 10]} />
-        <OrbitControls
+{/*         <OrbitControls
           enableZoom={false}
           minPolarAngle={1} // Restrict vertical rotation to fixed angle
           maxPolarAngle={1}
           target={[0, 0, 0]} // Look at the center of the scene
           enablePan={false} // Disable panning
           rotation={0}
-        />
+        /> */}
+              <OrbitControls />
         <Environment preset='forest' />
         <Suspense fallback={null}>
           <Plane args={[50, 50]} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
